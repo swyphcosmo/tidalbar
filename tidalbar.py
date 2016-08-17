@@ -1,5 +1,5 @@
 import tidalapi
-import mpv
+mpv = __import__( "python-mpv.mpv" ).mpv
 import getpass
 import time
 from requests import HTTPError
