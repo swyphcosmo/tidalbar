@@ -13,3 +13,13 @@ Using tidalapi, it is possible to acquire the RTMP URLs for tracks on TIDAL. [mp
 ### License
 
 Licensed under the [Apache License](https://www.apache.org/licenses/LICENSE-2.0.html).
+
+
+## Keypress Module
+
+```shell
+$ cd Keypress
+$ python3 setup.py build
+$ cd ..
+$ python3 keypresstest.py
+```
