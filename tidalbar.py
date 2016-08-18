@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import tidalapi
 import mpv
 import getpass
@@ -29,7 +31,10 @@ while login_attempts < allowed_attempts:
         username = input('TIDAL username: ')
         password = getpass.getpass('TIDAL password: ')
         if session.login(username, password):
-            print('\N{EIGHTH NOTE} Successfully logged in! \N{EIGHTH NOTE}')
+            try:
+                print('\N{EIGHTH NOTE} Successfully logged in! \N{EIGHTH NOTE}')
+            except UnicodeEncodeError:
+                print('Successfully logged in!')
             break
         else:
             print('Error establishing a session. Check your internet connection.')
@@ -131,12 +136,15 @@ playlists = session.get_user_playlists(session.user.id)
 # Add the tracks of the first user playlist to the mpv playlist
 # ! Need to slowly fetch URLs, say 3 at a time. If a playlist is 100 songs
 #   long the URL may have expired
-for track in session.get_playlist_tracks(playlists[0].id):
-    player.command('loadfile','rtmp://'+session.get_media_url(track.id),'append-play')
+if len( playlists ) > 0:
+    for track in session.get_playlist_tracks(playlists[0].id):
+        player.command('loadfile','rtmp://'+session.get_media_url(track.id),'append-play')
 
-# Print the number of tracks in the playlist
-print('%s tracks added to the mpv playlist' % len(player.playlist))
+    # Print the number of tracks in the playlist
+    print('%s tracks added to the mpv playlist' % len(player.playlist))
 
-while(len(player.playlist) != 0):
-    time.sleep(60)
+    while(len(player.playlist) != 0):
+        time.sleep(60)
+else:
+    print('No playlists found')
 
